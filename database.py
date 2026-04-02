@@ -23,5 +23,5 @@ def init_db():
 def get_db_connection():
     """Membuka koneksi database (dipanggil saat ada request)"""
     conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row  # Agar hasil query mudah diubah jadi JSON (dictionary)
+    conn.row_factory = sqlite3.Row 
     return conn
