@@ -3,7 +3,6 @@ from database import get_db_connection
 def create_email(sender: str, recipient: str, subject: str, body_text: str, body_html: str):
     conn = get_db_connection()
     cursor = conn.cursor()
-    # Bersihkan spasi kosong di awal/akhir dan jadikan huruf kecil semua
     clean_recipient = recipient.strip().lower() 
     
     cursor.execute("""
@@ -18,7 +17,6 @@ def create_email(sender: str, recipient: str, subject: str, body_text: str, body
 def get_emails_by_recipient(recipient: str):
     conn = get_db_connection()
     cursor = conn.cursor()
-    # Gunakan LIKE agar mengabaikan huruf besar/kecil dan format <email>
     search_term = f"%{recipient.strip().lower()}%"
     
     cursor.execute("""
