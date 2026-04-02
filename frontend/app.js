@@ -117,11 +117,11 @@ async function fetchInbox() {
     try {
         const response = await fetch(`${API_BASE_URL}/${currentEmail}`);
         
-        // Cek jika API menolak akses karena belum login atau token expired
+ 
         if (response.status === 401) {
-            clearInterval(pollingInterval); // Hentikan auto-refresh
+            clearInterval(pollingInterval); 
             alert("Sesi login kamu telah berakhir. Silakan login kembali.");
-            window.location.reload(); // Reload web agar diarahkan ke halaman login
+            window.location.reload(); 
             return;
         }
 
