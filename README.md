@@ -1,21 +1,16 @@
-
-```markdown
-# 🐱 Nekomail - Temporary Email Service
-
+🐱 Nekomail - Temporary Email Service
 Nekomail adalah layanan email sementara (temporary email) ringan yang dibangun menggunakan Python (FastAPI), SQLite, dan mengandalkan Cloudflare Email Routing beserta Ngrok/Cloudflared tunnel untuk menerima email yang masuk. Dilengkapi dengan sistem login berbasis Linux PAM dan pembersihan database otomatis.
 
----
-
-## 🛠️ Persyaratan Sistem (Requirements)
-
+🛠️ Persyaratan Sistem (Requirements)
 Sebelum menginstal, pastikan server/laptop kamu memenuhi syarat berikut:
-1. **Sistem Operasi Linux** (Direkomendasikan Ubuntu/Debian/Armbian, karena sistem login menggunakan modul `pam` bawaan Linux).
-2. **Python 3.8** atau versi lebih baru.
-3. **Akun Cloudflare** dengan **Domain Aktif** yang sudah terhubung.
-4. **Ngrok** atau **Cloudflared** terinstal di server/laptop kamu untuk mengekspos localhost ke internet publik.
 
-### Modul Python yang Dibutuhkan
-Buat file `requirements.txt` dan isi dengan:
+Sistem Operasi Linux (Direkomendasikan Ubuntu/Debian/Armbian, karena sistem login menggunakan modul pam bawaan Linux).
+Python 3.8 atau versi lebih baru.
+Akun Cloudflare dengan Domain Aktif yang sudah terhubung.
+Ngrok atau Cloudflared terinstal di server/laptop kamu untuk mengekspos localhost ke internet publik.
+
+## Modul Python yang Dibutuhkan
+Buat file requirements.txt dan isi dengan:
 ```text
 fastapi
 uvicorn
@@ -23,8 +18,6 @@ pydantic
 python-multipart
 python-pam
 ```
-
----
 
 ## 🚀 Cara Instalasi
 
