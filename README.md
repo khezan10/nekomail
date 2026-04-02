@@ -106,9 +106,46 @@ Kita perlu membuat Worker di Cloudflare yang bertugas menangkap email dan meneru
 3. Beri nama worker kamu (misal: `tmail-forwarder`), lalu klik **Deploy**.
 4. Setelah berhasil di-deploy, klik **Edit Code**.
 5. Masukkan script JS Worker yang menangkap email dan mengirimkan POST Request (berisi JSON `sender`, `recipient`, `subject`, `body_text`, `body_html`) ke endpoint backend kamu.
+```javascript
+export default {
+  async email(message, env, ctx) {
+    // 1. Ganti link ini dengan link Ngrok kamu (jangan lupa tambahkan /webhook/email di belakangnya)
+    const NGROK_URL = "https://domainkamu.com/webhook/email";
+
+    // 2. Ambil informasi dasar email
+    const from = message.from;
+    const to = message.to;
+    const subject = message.headers.get("subject") || "(Tanpa Subjek)";
+
+    // 3. Baca isi email mentah (Raw MIME)
+    const rawEmail = await new Response(message.raw).text();
+
+    // 4. Bungkus data menjadi JSON untuk dikirim ke Backend Python kita
+    const payload = {
+        sender: from,
+        recipient: to,
+        subject: subject,
+        body_text: rawEmail, 
+        body_html: "" 
+    };
+
+    // 5. Lempar data ke API Python kita menggunakan POST request
+    try {
+      await fetch(NGROK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      console.log(`Berhasil meneruskan email dari ${from} ke ${to}`);
+    } catch (error) {
+      console.error("Gagal mengirim ke webhook:", error);
+    }
+  }
+}
+```
    * **PENTING:** Pastikan URL tujuan di dalam script Worker diarahkan ke URL Tunnel kamu ditambah `/webhook/email`.
    * Contoh: `https://api.domainkamu.com/webhook/email` atau `https://1234-abcd.ngrok-free.app/webhook/email`.
-6. Klik **Save and Deploy**.
+7. Klik **Save and Deploy**.
 
 ---
 
