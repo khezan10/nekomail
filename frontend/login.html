@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Nekomail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { 
+                extend: { 
+                    colors: { 
+                        neko: '#ff901a', 
+                        nekohigh: '#e67e12' 
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                } 
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 flex items-center justify-center min-h-screen transition-colors duration-300 relative overflow-hidden font-sans">
+
+    <div class="absolute top-12 left-12 text-gray-200 dark:text-gray-800 transform -rotate-45 text-6xl opacity-40 pointer-events-none">
+        <i class="fa-solid fa-paw"></i>
+    </div>
+    <div class="absolute bottom-12 right-12 text-gray-200 dark:text-gray-800 transform rotate-12 text-8xl opacity-30 pointer-events-none">
+        <i class="fa-solid fa-paw"></i>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 p-8 sm:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(8,_112,_184,_0.07)] dark:shadow-none w-full max-w-sm relative z-10 transition-colors duration-300 border border-gray-100 dark:border-gray-700">
+        
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center bg-neko text-white w-16 h-16 rounded-full mb-5 shadow-lg shadow-orange-200 dark:shadow-none transition-transform hover:scale-110 duration-300">
+                <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 14.5c-1.5 0-2.5-.5-2.5-.5s1-1.5 2.5-1.5 2.5 1.5 2.5 1.5-1 .5-2.5.5z"/>
+                    <path d="M20.5 4.5l-1.4 6.3a8.5 8.5 0 0 1-14.2 0L3.5 4.5l5.2 3.5a8.5 8.5 0 0 1 6.6 0l5.2-3.5zM12 21a8.5 8.5 0 0 0 6.5-3.3A8.48 8.48 0 0 1 12 19a8.48 8.48 0 0 1-6.5-1.3A8.5 8.5 0 0 0 12 21z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight">Nekomail</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium">temporary email by nekomail</p>
+        </div>
+
+        <form id="login-form" class="space-y-5">
+            <div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-user text-gray-400 dark:text-gray-500 text-sm"></i>
+                    </div>
+                    <input type="text" id="username" placeholder="Username Server" required
+                        class="pl-11 w-full bg-gray-50 dark:bg-gray-700/50 border-none text-gray-900 dark:text-white rounded-2xl p-4 focus:ring-2 focus:ring-neko focus:bg-white dark:focus:bg-gray-700 outline-none transition-all placeholder-gray-400">
+                </div>
+            </div>
+
+            <div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-lock text-gray-400 dark:text-gray-500 text-sm"></i>
+                    </div>
+                    <input type="password" id="password" placeholder="Password Server" required
+                        class="pl-11 w-full bg-gray-50 dark:bg-gray-700/50 border-none text-gray-900 dark:text-white rounded-2xl p-4 focus:ring-2 focus:ring-neko focus:bg-white dark:focus:bg-gray-700 outline-none transition-all placeholder-gray-400">
+                </div>
+            </div>
+
+            <p id="error-msg" class="text-red-500 bg-red-50 dark:bg-red-900/30 dark:text-red-400 text-sm text-center py-2 px-3 rounded-xl hidden font-medium"></p>
+
+            <button type="submit" id="btn-login" class="w-full bg-gray-900 hover:bg-black dark:bg-neko dark:hover:bg-nekohigh text-white font-bold py-4 px-4 rounded-2xl transition duration-300 transform active:scale-95 flex justify-center items-center">
+                <span>Masuk <i class="fa-solid fa-arrow-right ml-2 text-sm"></i></span>
+            </button>
+        </form>
+        
+        <div class="mt-8 text-center">
+            <p class="text-xs text-gray-400 dark:text-gray-500"><i class="fa-solid fa-shield-halved mr-1"></i> Secured by Linux PAM</p>
+        </div>
+    </div>
+
+    <script>
+        // Set otomatis dark mode sesuai sistem operasi
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login');
+            const errorMsg = document.getElementById('error-msg');
+            const originalBtnHtml = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xl"></i>';
+            btn.disabled = true;
+            errorMsg.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append("username", document.getElementById('username').value);
+            formData.append("password", document.getElementById('password').value);
+
+            try {
+                const response = await fetch('/api/login', { method: 'POST', body: formData });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    btn.innerHTML = '<i class="fa-solid fa-check text-xl"></i>';
+                    btn.classList.replace('bg-gray-900', 'bg-green-500');
+                    btn.classList.replace('dark:bg-neko', 'dark:bg-green-500');
+                    setTimeout(() => window.location.reload(), 500); // Reload untuk masuk ke inbox
+                } else {
+                    errorMsg.innerText = result.message;
+                    errorMsg.classList.remove('hidden');
+                    btn.innerHTML = originalBtnHtml;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                errorMsg.innerText = "Gagal terhubung ke server STB.";
+                errorMsg.classList.remove('hidden');
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
