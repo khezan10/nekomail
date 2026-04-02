@@ -1,5 +1,5 @@
 // GANTI BAGIAN INI DENGAN DOMAIN KAMU NANTI!
-const DOMAIN = "@khezanamartya.my.id"; 
+const DOMAIN = "@domainmu.com"; 
 
 // URL Backend FastAPI kamu
 const API_BASE_URL = window.location.origin + "/api/inbox";
