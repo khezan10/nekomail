@@ -12,7 +12,7 @@ from email.policy import default
 import pam
 import uuid
 
-# Import modul yang sudah kita buat
+
 from database import init_db
 import crud
 from cleanup_task import start_daily_cleanup
@@ -33,13 +33,13 @@ async def lifespan(app: FastAPI):
     init_db() 
     cleanup_task = asyncio.create_task(start_daily_cleanup()) 
     yield
-    cleanup_task.cancel() # Batalkan task saat server dimatikan
+    cleanup_task.cancel() 
 
 app = FastAPI(title="Nekomail Backend API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Nanti ganti dengan domain kamu saat production
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,7 +60,6 @@ async def login(response: Response, username: str = Form(...), password: str = F
     if p.authenticate(username, password):
         session_token = str(uuid.uuid4())
         active_sessions[session_token] = username
-        # Simpan token ke cookie browser selama 1 hari
         response.set_cookie(key="nekomail_session", value=session_token, httponly=True, max_age=86400)
         return {"status": "success"}
     return {"status": "error", "message": "Username atau Password Linux salah!"}
@@ -85,7 +84,7 @@ async def receive_email(webhook_data: EmailWebhook):
         for part in msg.walk():
             content_disposition = str(part.get_content_disposition())
             if "attachment" in content_disposition:
-                continue # Abaikan jika ada file lampiran
+                continue 
             
             content_type = part.get_content_type()
             try:
@@ -113,7 +112,7 @@ async def receive_email(webhook_data: EmailWebhook):
         except Exception as e:
             print(f"Gagal membedah body email: {e}")
 
-    # Fallback: Jika parsing gagal, gunakan data mentah
+
     final_text = real_text or webhook_data.body_text
     final_html = real_html or webhook_data.body_html
 
